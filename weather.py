@@ -1,16 +1,40 @@
 import os
+import re
 import json
 import requests
 import argparse
 from weather_man import WeatherMan, CurrentWeather, TenDayWeather, SunPhase
 
-# find out where to get:
 # current conditions √
 # 10-day forecast √
 # sunrise √
 # sunset √
 # current weather alerts
 # all active hurricanes
+
+
+def get_location_input():
+    return input("Enter a zip code or city, state: ")
+
+# regex validation for future use
+def validate_location(location):
+    if re.match(r'\d{5}', location):
+        return location, 'zip'
+
+    elif re.match(r'^(\w+\s*\w*)[,\s]+([A-Z]{2})$', location):
+        city, state = re.match(r'^(\w+\s*\w*)[,\s]+([A-Z]{2})$',
+                               location).groups()
+        return (city, state), 'abbreviation'
+
+    elif re.match(r'^(\w+\s*\w*)[,\s]+(\w+\s*\w*)$', location):
+        city, state = re.match(r'^(\w+\s*\w*)[,\s]+(\w+\s*\w*)$',
+                               location).groups()
+        valid_by_input = input("Are you searching for {}, {}? y/N".format(
+                                                                city, state))
+        if valid_by_input.lower() != 'y':
+            print("Please try entering your zip code.")
+            get_location_input()
+        return (city, state), 'full state'
 
 
 def is_not_finished():
@@ -23,7 +47,7 @@ def main():
         zip_code = args.zip_code
 
     else:
-        zip_code = input("Enter a zip code: ")
+        get_location_input()
 
     weather_man = WeatherMan(zip_code)
     current_weather = CurrentWeather(zip_code)
