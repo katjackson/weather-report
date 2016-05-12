@@ -6,7 +6,7 @@ This program can be run from the command line by following the file call with a 
 
 ## WeatherMan
 The weather_man.py file contains the WeatherMan class. When instantiated, the WeatherMan class searches for a cached json of the requested data, and if the file does not exist, it queries the Weather Underground API and saves the response as a json.
-*__str__*
+<br>*\__str\__*<br>
 The WeatherMan and its subclasses have string functions for printing out the attributes in an accessible way.
 
 ## WeatherMan subclasses
